@@ -28,13 +28,16 @@ class AuthController extends Controller
         // Password nggak di-Hash::make manual di sini.
         // Model User punya cast 'hashed', jadi hashing-nya jalan otomatis waktu disimpan.
         $user = User::create($data);
+        $token = $user->createToken('api_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'Registrasi berhasil.',
+            'user' => $this->bentukUser($user),
+            'token' => $token,
             'data' => [
                 'user' => $this->bentukUser($user),
-                'token' => $user->createToken('api_token')->plainTextToken,
+                'token' => $token,
             ]
         ], 201);
     }
@@ -59,12 +62,16 @@ class AuthController extends Controller
         // Hapus semua token lama milik user ini (Single Session)
         $user->tokens()->delete();
 
+        $token = $user->createToken('api_token')->plainTextToken;
+
         return response()->json([
             'success' => true,
             'message' => 'Login berhasil.',
+            'user' => $this->bentukUser($user),
+            'token' => $token,
             'data' => [
                 'user' => $this->bentukUser($user),
-                'token' => $user->createToken('api_token')->plainTextToken,
+                'token' => $token,
             ]
         ]);
     }
@@ -84,11 +91,14 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
+        $userData = $this->bentukUser($request->user());
+
         return response()->json([
             'success' => true,
             'message' => 'Data user berhasil diambil.',
+            'user' => $userData,
             'data' => [
-                'user' => $this->bentukUser($request->user()),
+                'user' => $userData,
             ]
         ]);
     }
