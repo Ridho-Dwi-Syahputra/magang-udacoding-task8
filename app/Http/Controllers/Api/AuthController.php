@@ -30,9 +30,12 @@ class AuthController extends Controller
         $user = User::create($data);
 
         return response()->json([
+            'success' => true,
             'message' => 'Registrasi berhasil.',
-            'user' => $this->bentukUser($user),
-            'token' => $user->createToken('api_token')->plainTextToken,
+            'data' => [
+                'user' => $this->bentukUser($user),
+                'token' => $user->createToken('api_token')->plainTextToken,
+            ]
         ], 201);
     }
 
@@ -53,10 +56,16 @@ class AuthController extends Controller
             ])->status(401);
         }
 
+        // Hapus semua token lama milik user ini (Single Session)
+        $user->tokens()->delete();
+
         return response()->json([
+            'success' => true,
             'message' => 'Login berhasil.',
-            'user' => $this->bentukUser($user),
-            'token' => $user->createToken('api_token')->plainTextToken,
+            'data' => [
+                'user' => $this->bentukUser($user),
+                'token' => $user->createToken('api_token')->plainTextToken,
+            ]
         ]);
     }
 
@@ -67,14 +76,20 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
+            'success' => true,
             'message' => 'Logout berhasil.',
+            'data' => null
         ]);
     }
 
     public function me(Request $request): JsonResponse
     {
         return response()->json([
-            'user' => $this->bentukUser($request->user()),
+            'success' => true,
+            'message' => 'Data user berhasil diambil.',
+            'data' => [
+                'user' => $this->bentukUser($request->user()),
+            ]
         ]);
     }
 

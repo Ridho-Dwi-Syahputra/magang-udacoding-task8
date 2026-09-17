@@ -31,6 +31,7 @@ class ItemController extends Controller
         $items = $query->orderBy('name')->paginate($request->integer('per_page', 15));
 
         return response()->json([
+            'success' => true,
             'message' => 'Daftar barang berhasil diambil.',
             'data' => ItemResource::collection($items),
             'meta' => [
@@ -47,6 +48,7 @@ class ItemController extends Controller
         $item->load('category');
 
         return response()->json([
+            'success' => true,
             'message' => 'Detail barang berhasil diambil.',
             'data' => new ItemResource($item),
         ]);
@@ -57,6 +59,7 @@ class ItemController extends Controller
         $item = Item::create($request->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'Barang berhasil ditambahkan.',
             'data' => new ItemResource($item->load('category')),
         ], 201);
@@ -67,6 +70,7 @@ class ItemController extends Controller
         $item->update($request->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'Barang berhasil diperbarui.',
             'data' => new ItemResource($item->fresh()->load('category')),
         ]);
@@ -77,7 +81,9 @@ class ItemController extends Controller
         $item->delete();
 
         return response()->json([
+            'success' => true,
             'message' => 'Barang berhasil dihapus.',
+            'data' => null
         ]);
     }
 }

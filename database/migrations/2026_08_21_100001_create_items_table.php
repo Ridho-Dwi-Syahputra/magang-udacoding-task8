@@ -9,11 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 16)->primary();
 
             // restrictOnDelete, bukan cascade. Kategori yang masih dipakai barang
             // nggak boleh dihapus begitu aja, nanti stoknya ikut hilang tanpa sadar.
-            $table->foreignId('category_id')->constrained()->restrictOnDelete();
+            $table->string('category_id', 16);
+            $table->foreign('category_id')->references('id')->on('categories')->restrictOnDelete();
 
             $table->string('name');
             $table->string('sku')->unique();

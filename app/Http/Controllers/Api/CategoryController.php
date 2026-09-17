@@ -17,6 +17,7 @@ class CategoryController extends Controller
         $categories = Category::withCount('items')->orderBy('name')->get();
 
         return response()->json([
+            'success' => true,
             'message' => 'Daftar kategori berhasil diambil.',
             'data' => CategoryResource::collection($categories),
         ]);
@@ -27,6 +28,7 @@ class CategoryController extends Controller
         $category->load('items');
 
         return response()->json([
+            'success' => true,
             'message' => 'Detail kategori berhasil diambil.',
             'data' => new CategoryResource($category),
         ]);
@@ -37,6 +39,7 @@ class CategoryController extends Controller
         $category = Category::create($request->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'Kategori berhasil dibuat.',
             'data' => new CategoryResource($category),
         ], 201);
@@ -47,6 +50,7 @@ class CategoryController extends Controller
         $category->update($request->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'Kategori berhasil diperbarui.',
             'data' => new CategoryResource($category->fresh()),
         ]);
@@ -58,14 +62,18 @@ class CategoryController extends Controller
         // adalah error database mentah, bukan pesan yang kebaca manusia.
         if ($category->items()->exists()) {
             return response()->json([
+                'success' => false,
                 'message' => 'Kategori ini masih dipakai barang, pindahkan barangnya dulu.',
+                'data' => null
             ], 409);
         }
 
         $category->delete();
 
         return response()->json([
+            'success' => true,
             'message' => 'Kategori berhasil dihapus.',
+            'data' => null
         ]);
     }
 }
