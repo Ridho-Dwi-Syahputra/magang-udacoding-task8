@@ -17,7 +17,7 @@ class ItemRequest extends FormRequest
         $wajib = $this->isMethod('POST') ? 'required' : 'sometimes';
 
         return [
-            'category_id' => [$wajib, 'integer', 'exists:categories,id'],
+            'category_id' => [$wajib, 'string', 'exists:categories,id'],
             'name' => [$wajib, 'string', 'max:255'],
             'sku' => [$wajib, 'string', 'max:50', Rule::unique('items', 'sku')->ignore($this->route('item'))],
             'description' => ['nullable', 'string'],
