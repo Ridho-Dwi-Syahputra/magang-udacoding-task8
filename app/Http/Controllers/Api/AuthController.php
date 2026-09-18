@@ -35,10 +35,6 @@ class AuthController extends Controller
             'message' => 'Registrasi berhasil.',
             'user' => $this->bentukUser($user),
             'token' => $token,
-            'data' => [
-                'user' => $this->bentukUser($user),
-                'token' => $token,
-            ]
         ], 201);
     }
 
@@ -69,10 +65,6 @@ class AuthController extends Controller
             'message' => 'Login berhasil.',
             'user' => $this->bentukUser($user),
             'token' => $token,
-            'data' => [
-                'user' => $this->bentukUser($user),
-                'token' => $token,
-            ]
         ]);
     }
 
@@ -97,9 +89,6 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Data user berhasil diambil.',
             'user' => $userData,
-            'data' => [
-                'user' => $userData,
-            ]
         ]);
     }
 
