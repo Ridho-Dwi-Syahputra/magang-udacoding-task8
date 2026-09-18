@@ -21,7 +21,7 @@ class ItemController extends Controller
 
         if ($request->filled('q')) {
             $kata = $request->query('q');
-            $query->where(fn ($q) => $q->where('name', 'like', "%{$kata}%")->orWhere('sku', 'like', "%{$kata}%"));
+            $query->where(fn($q) => $q->where('name', 'like', "%{$kata}%")->orWhere('sku', 'like', "%{$kata}%"));
         }
 
         if ($request->boolean('low_stock')) {
