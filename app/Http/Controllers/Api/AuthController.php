@@ -25,16 +25,12 @@ class AuthController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-        // Password nggak di-Hash::make manual di sini.
-        // Model User punya cast 'hashed', jadi hashing-nya jalan otomatis waktu disimpan.
         $user = User::create($data);
-        $token = $user->createToken('api_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
-            'message' => 'Registrasi berhasil.',
+            'message' => 'Registrasi berhasil. Silakan login.',
             'user' => $this->bentukUser($user),
-            'token' => $token,
         ], 201);
     }
 
